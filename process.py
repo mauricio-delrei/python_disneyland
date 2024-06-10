@@ -33,7 +33,8 @@ def find_reviews_by_park(reviews, park):
     return [review for review in reviews if review[BRANCH_INDEX].replace(' ', '_').lower() == mapped_park.lower()]
 
 def find_reviews_by_location(reviews, location):
-    return [review for review in reviews if review[REVIEWER_LOCATION_INDEX] == location]
+    location = location.lower()
+    return [review for review in reviews if review[REVIEWER_LOCATION_INDEX].lower() == location]
 
 def find_reviews_by_year(reviews, year):
     return [review for review in reviews if review[YEAR_MONTH_INDEX].startswith(str(year))]
@@ -54,7 +55,7 @@ def view_reviews_by_park(data):
 def number_of_reviews_by_park_and_location(data):
     park = input("Enter the park name: ").lower()
     reviews_by_park = find_reviews_by_park(data, park)
-    location = input("Enter the reviewer's location: ")
+    location = input("Enter the reviewer's location: ").lower()
     reviews_by_park_and_location = find_reviews_by_location(reviews_by_park, location)
     if reviews_by_park_and_location:
         print(f"Number of reviews for {park} from {location}: {len(reviews_by_park_and_location)}")
@@ -73,12 +74,12 @@ def average_score_per_year_by_park(data):
         print(f"No reviews found for {park} in {year}.")
 
 def average_score_per_park_by_reviewer_location(data):
-    park = input("Enter the park name: ").lower()
-    reviews_by_park = find_reviews_by_park(data, park)
-    location = input("Enter the reviewer's location: ")
-    reviews_by_location = find_reviews_by_location(reviews_by_park, location)
-    if reviews_by_location:
-        average_score = calculate_rating_average_to_reviews(reviews_by_location)
-        print(f"Average score for {park} in {location}: {average_score:.2f}")
-    else:
-        print(f"No reviews found for {park} in {location}.")
+    reviews_by_park_location = defaultdict(list)
+    for review in data:
+        park = review[BRANCH_INDEX].replace(' ', '_').lower()
+        location = review[REVIEWER_LOCATION_INDEX].lower()
+        reviews_by_park_location[(park, location)].append(int(review[RATING_INDEX]))
+
+    for (park, location), ratings in reviews_by_park_location.items():
+        average_score = sum(ratings) / len(ratings)
+        print(f"Average score for {park} from {location}: {average_score:.2f}")

@@ -8,6 +8,7 @@ def main_menu():
     print("\nPlease enter the letter which corresponds with your desired menu choice:")
     print("[A] View Data")
     print("[B] Visualise Data")
+    print("[C] Export Data")  # Adicionando a opção para exportar dados
     print("[X] Exit\n")
 
 def view_data_submenu():

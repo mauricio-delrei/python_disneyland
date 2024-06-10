@@ -1,9 +1,8 @@
 from tui import display_title, main_menu, view_data_submenu, visualize_data_submenu, get_user_input
-from process import (
-    read_csv_file, view_reviews_by_park, number_of_reviews_by_park_and_location,
-    average_score_per_year_by_park, average_score_per_park_by_reviewer_location
-)
+from process import read_csv_file, view_reviews_by_park, number_of_reviews_by_park_and_location, average_score_per_year_by_park, average_score_per_park_by_reviewer_location
 from visual import visualize_most_reviewed_parks, visualize_average_scores, park_ranking_by_nationality, most_popular_month_by_park
+from exporter import Exporter
+
 
 def handle_view_data_choice(sub_choice, data):
     if sub_choice == 'A':
@@ -29,6 +28,18 @@ def handle_visualize_data_choice(sub_choice, data):
     else:
         print("Invalid choice.")
 
+def export_data_menu(data):
+    exporter = Exporter(data)
+    format_choice = input("Choose export format (TXT, CSV, JSON): ").upper()
+    if format_choice == 'TXT':
+        exporter.export_to_txt("exported_data.txt")
+    elif format_choice == 'CSV':
+        exporter.export_to_csv("exported_data.csv")
+    elif format_choice == 'JSON':
+        exporter.export_to_json("exported_data.json")
+    else:
+        print("Invalid format choice.")
+
 def main():
     display_title("Disneyland review analyzer")
     data = read_csv_file("data/disneyland_reviews.csv")
@@ -50,6 +61,8 @@ def main():
             visualize_data_submenu()
             sub_choice = get_user_input()
             handle_visualize_data_choice(sub_choice, data)
+        elif choice == 'C':  # Adicionando uma nova condição para a opção de exportar dados
+            export_data_menu(data)
         else:
             print("Invalid choice.")
 

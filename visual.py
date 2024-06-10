@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 from collections import defaultdict
 
-# "Setting BRANCH_NAMES here to be used in the visualization functions."
+# Setting BRANCH_NAMES here to be used in the visualization functions.
 BRANCH_NAMES = {
     "disneyland_california": "Disneyland_California",
     "disneyland_paris": "Disneyland_Paris",
@@ -68,9 +68,9 @@ def most_popular_month_by_park(data):
 
     month_count = defaultdict(int)
     for review in reviews_by_park:
-        if len(review) > 2:  # "Check if the 'review' list has at least 3 elements."
+        if len(review) > 2:  # Check if the 'review' list has at least 3 elements.
             year_month = review[2]
-            if '-' in year_month:  # "Check if the string 'year_month' contains the character '-'." '-'
+            if '-' in year_month:  # Check if the string 'year_month' contains the character '-'.
                 month = year_month.split('-')[1]
                 month_count[month] += 1
 
@@ -83,4 +83,3 @@ def most_popular_month_by_park(data):
     plt.title(f'Most Popular Months for {BRANCH_NAMES.get(park, park)}')
     plt.xticks(rotation=45, ha='right')
     plt.show()
-
